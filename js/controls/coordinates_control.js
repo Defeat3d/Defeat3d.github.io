@@ -9,15 +9,15 @@ export var CoordinatesControl = L.Control.extend({
 
     onAdd: function (map) {
 
-        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        let container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         container.id = 'coordinates-container';
         container.style.height = 'auto';
         L.DomEvent.disableClickPropagation(container);
 
-        var coordinatesForm = L.DomUtil.create('form', 'leaflet-bar leaflet-control leaflet-control-custom form-inline', container);
-        
-        var formGroup = L.DomUtil.create('div', 'form-group', coordinatesForm);
-        
+        let coordinatesForm = L.DomUtil.create('form', 'leaflet-bar leaflet-control leaflet-control-custom form-inline', container);
+
+        let formGroup = L.DomUtil.create('div', 'form-group', coordinatesForm);
+
         this._xCoordInput = this._createInput("xCoord", "x", formGroup);
         this._yCoordInput = this._createInput("yCoord", "y", formGroup);
         this._zCoordInput = this._createInput("zCoord", "z", formGroup);
@@ -28,7 +28,7 @@ export var CoordinatesControl = L.Control.extend({
     },
 
     _createInput: function(id, title, container, keyupFunc) {
-        var coordInput = L.DomUtil.create('input', 'form-control coord', container);
+        let coordInput = L.DomUtil.create('input', 'form-control coord', container);
         coordInput.type = 'text';
         coordInput.id = id;
 
@@ -39,9 +39,9 @@ export var CoordinatesControl = L.Control.extend({
     },
 
     _goToCoordinates: function() {
-        var x = this._xCoordInput.value;
-        var y = this._yCoordInput.value;
-        var z = this._zCoordInput.value;
+        let x = this._xCoordInput.value;
+        let y = this._yCoordInput.value;
+        let z = this._zCoordInput.value;
 
         if (!$.isNumeric(x) || !$.isNumeric(y) || !$.isNumeric(z)) {
             return;
@@ -66,11 +66,11 @@ export var CoordinatesControl = L.Control.extend({
     },
 
     _setMousePositionCoordinates: function(e) {
-		if (this._map.getContainer() !== document.activeElement) {
-			return;
-		}
-		
-        var mousePos = Position.fromLatLng(this._map, e.latlng, this._map.plane);
+        if (this._map.getContainer() !== document.activeElement) {
+            return;
+        }
+
+        let mousePos = Position.fromLatLng(this._map, e.latlng, this._map.plane);
 
         this._xCoordInput.value = mousePos.x;
         this._yCoordInput.value = mousePos.y;

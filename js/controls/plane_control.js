@@ -6,18 +6,18 @@ export var PlaneControl = L.Control.extend({
     },
 
     onAdd: function (map) {
-        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control noselect');
+        let container = L.DomUtil.create('div', 'leaflet-bar leaflet-control noselect');
         container.style.background = 'none';
         container.style.width = '70px';
         container.style.height = 'auto';
 
-        var incrementPlaneButton = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom', container);
+        let incrementPlaneButton = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom', container);
         incrementPlaneButton.id = 'increase-level';
         incrementPlaneButton.innerHTML = 'Z +';
 
         L.DomEvent.on(incrementPlaneButton, 'click', this._increasePlane, this);
 
-        var decrementPlaneButton = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom', container);
+        let decrementPlaneButton = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom', container);
         decrementPlaneButton.id = 'decrease-level';
         decrementPlaneButton.innerHTML = 'Z -';
 

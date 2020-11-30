@@ -4,7 +4,7 @@ import {Converter} from "../converter.js";
 
 export class RuneMateGraphConverter extends Converter {
 
-    toRaw(graph) {
+    toJson(graph) {
         let vertexOutput = ``;
         let edgeOutput = ``;
         for (let i = 0; i < graph.vertices.length; i++) {
@@ -36,22 +36,6 @@ export class RuneMateGraphConverter extends Converter {
         combinedOutput += edgeOutput;
         combinedOutput += `}\n}`;
         return combinedOutput;
-    }
-
-    toJavaSingle(graph) {
-        return this.toRaw(graph);
-    }
-
-    toJavaArray(graph) {
-        return this.toRaw(graph);
-    }
-
-    toJavaList(graph) {
-        return this.toRaw(graph);
-    }
-
-    toJavaArraysAsList(graph) {
-        return this.toRaw(graph);
     }
 
 }

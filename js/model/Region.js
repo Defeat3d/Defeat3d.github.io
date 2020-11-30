@@ -18,20 +18,20 @@ export class Region {
 	}
 	
     static fromCoordinates(x, y) {
-	    var regionID = (x >> 6) * 256 + (y >> 6);
-	    return new Region(regionID);
+		let regionID = (x >> 6) * 256 + (y >> 6);
+		return new Region(regionID);
 	}
 	
     toCentrePosition() {
-        var position = this.toPosition();
-        position.x += REGION_WIDTH / 2;
-        position.y += REGION_HEIGHT / 2;
-        return position;
-    }
+		let position = this.toPosition();
+		position.x += REGION_WIDTH / 2;
+		position.y += REGION_HEIGHT / 2;
+		return position;
+	}
     
 	toPosition() {
-	    var x = (this.id >> 8) << 6;
-		var y = (this.id & 0xFF) << 6;
+		let x = (this.id >> 8) << 6;
+		let y = (this.id & 0xFF) << 6;
 		return new Position(x, y, 0);
 	}
 };

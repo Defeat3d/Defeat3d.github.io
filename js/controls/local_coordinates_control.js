@@ -10,14 +10,14 @@ export var LocalCoordinatesControl = L.Control.extend({
 
     onAdd: function (map) {
 
-        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        let container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         container.id = 'coordinates-container';
         container.style.height = 'auto';
         L.DomEvent.disableClickPropagation(container);
 
-        var localCoordinatesForm = L.DomUtil.create('form', 'leaflet-bar leaflet-control leaflet-control-custom form-inline', container);
+        let localCoordinatesForm = L.DomUtil.create('form', 'leaflet-bar leaflet-control leaflet-control-custom form-inline', container);
 
-        var formGroup = L.DomUtil.create('div', 'form-group', localCoordinatesForm);
+        let formGroup = L.DomUtil.create('div', 'form-group', localCoordinatesForm);
 
         this._xCoordInput = this._createInput("localXCoord", "x", formGroup);
         this._yCoordInput = this._createInput("localYCoord", "y", formGroup);
@@ -28,7 +28,7 @@ export var LocalCoordinatesControl = L.Control.extend({
     },
 
     _createInput: function(id, title, container, keyupFunc) {
-        var coordInput = L.DomUtil.create('input', 'form-control coord', container);
+        let coordInput = L.DomUtil.create('input', 'form-control coord', container);
         coordInput.type = 'text';
         coordInput.id = id;
 
@@ -37,15 +37,15 @@ export var LocalCoordinatesControl = L.Control.extend({
     },
 
     _setMousePositionCoordinates: function(e) {
-		if (this._map.getContainer() !== document.activeElement) {
-			return;
-		}
-		
-        var mousePos = Position.fromLatLng(this._map, e.latlng, this._map.plane);
-        var regionPos = Region.fromPosition(mousePos).toPosition();
-        
-        var localX = mousePos.x - regionPos.x;
-        var localY = mousePos.y - regionPos.y;
+        if (this._map.getContainer() !== document.activeElement) {
+            return;
+        }
+
+        let mousePos = Position.fromLatLng(this._map, e.latlng, this._map.plane);
+        let regionPos = Region.fromPosition(mousePos).toPosition();
+
+        let localX = mousePos.x - regionPos.x;
+        let localY = mousePos.y - regionPos.y;
 
         this._xCoordInput.value = localX;
         this._yCoordInput.value = localY;

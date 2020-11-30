@@ -6,10 +6,10 @@ export var TitleLabel = L.Control.extend({
     },
 
     onAdd: function (map) {
-        var container = L.DomUtil.create('div');
+        let container = L.DomUtil.create('div');
         container.id = 'titleLabel';
-        container.href = 'http://osbot.org/forum/user/192661-explv/';
-        container.innerHTML = "<span id='explv'>Explv</span>'s Map";
+        container.href = 'https://www.runemate.com/community/members/defeat3d.675/';
+        container.innerHTML = "<span id='explv'>Defiled</span>'s Map";
 
         L.DomEvent.disableClickPropagation(container);
         return container;

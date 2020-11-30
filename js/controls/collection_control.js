@@ -1,70 +1,14 @@
 'use strict';
 
 import {Position} from '../model/Position.js';
-import {Area} from '../model/Area.js';
-import {Path} from '../model/Path.js';
-import {DaxPath} from '../model/DaxPath.js';
-import {Areas} from '../model/Areas.js';
-import {PolyArea} from '../model/PolyArea.js';
 import {Graph} from '../model/Graph.js'
 
 
 // Import converters
-import {OSBotAreasConverter} from '../bot_api_converters/osbot/osbot_areas_converter.js';
-import {OSBotPathConverter} from '../bot_api_converters/osbot/osbot_path_converter.js';
-import {OSBotPolyAreaConverter} from '../bot_api_converters/osbot/osbot_polyarea_converter.js';
-
-import {TRiBotAreasConverter} from '../bot_api_converters/tribot/tribot_areas_converter.js';
-import {TRiBotPathConverter} from '../bot_api_converters/tribot/tribot_path_converter.js';
-import {TRiBotPolyAreaConverter} from '../bot_api_converters/tribot/tribot_polyarea_converter.js';
-
-import {DreamBotAreasConverter} from '../bot_api_converters/dreambot/dreambot_areas_converter.js';
-import {DreamBotPathConverter} from '../bot_api_converters/dreambot/dreambot_path_converter.js';
-import {DreamBotPolyAreaConverter} from '../bot_api_converters/dreambot/dreambot_polyarea_converter.js';
-
-import {RSPeerAreasConverter} from '../bot_api_converters/rspeer/rspeer_areas_converter.js';
-import {RSPeerPathConverter} from '../bot_api_converters/rspeer/rspeer_path_converter.js';
-import {RSPeerPolyAreaConverter} from '../bot_api_converters/rspeer/rspeer_polyarea_converter.js';
-
-import {QuantumBotAreasConverter} from '../bot_api_converters/quantumbot/quantumbot_areas_converter.js';
-import {QuantumBotPathConverter} from '../bot_api_converters/quantumbot/quantumbot_path_converter.js';
-import {QuantumBotPolyAreaConverter} from '../bot_api_converters/quantumbot/quantumbot_polyarea_converter.js';
-
-import {RuneMateAreasConverter} from '../bot_api_converters/runemate/runemate_areas_converter.js';
-import {RuneMatePathConverter} from '../bot_api_converters/runemate/runemate_path_converter.js';
-import {RuneMatePolyAreaConverter} from '../bot_api_converters/runemate/runemate_polyarea_converter.js';
 import {RuneMateGraphConverter} from "../bot_api_converters/runemate/runemate_graph_converter.js";
 
-var converters = {
-    "OSBot": {
-        "areas_converter": new OSBotAreasConverter(),
-        "path_converter": new OSBotPathConverter(),
-        "polyarea_converter": new OSBotPolyAreaConverter()
-    },
-    "TRiBot": {
-        "areas_converter": new TRiBotAreasConverter(),
-        "path_converter": new TRiBotPathConverter(),
-        "polyarea_converter": new TRiBotPolyAreaConverter()
-    },
-    "DreamBot": {
-        "areas_converter": new DreamBotAreasConverter(),
-        "path_converter": new DreamBotPathConverter(),
-        "polyarea_converter": new DreamBotPolyAreaConverter()
-    },
-    "RSPeer": {
-        "areas_converter": new RSPeerAreasConverter(),
-        "path_converter": new RSPeerPathConverter(),
-        "polyarea_converter": new RSPeerPolyAreaConverter()
-    },
-    "QuantumBot": {
-        "areas_converter": new QuantumBotAreasConverter(),
-        "path_converter": new QuantumBotPathConverter(),
-        "polyarea_converter": new QuantumBotPolyAreaConverter()
-    },
+let converters = {
     "RuneMate": {
-        "areas_converter": new RuneMateAreasConverter(),
-        "path_converter": new RuneMatePathConverter(),
-        "polyarea_converter": new RuneMatePolyAreaConverter(),
         "graph_converter": new RuneMateGraphConverter()
     }
 };
@@ -75,10 +19,6 @@ export var CollectionControl = L.Control.extend({
     },
 
     onAdd: function (map) {
-        this._path = new Path(this._map);
-        this._daxPath = new DaxPath(this._map);
-        this._areas = new Areas(this._map);
-        this._polyArea = new PolyArea(this._map);
         this._graph = new Graph(this._map);
 
         this._currentDrawable = undefined;
@@ -91,7 +31,7 @@ export var CollectionControl = L.Control.extend({
         this._drawnMouseArea = undefined;    
         this._editing = false;
 
-        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control noselect');
+        let container = L.DomUtil.create('div', 'leaflet-bar leaflet-control noselect');
         container.style.background = 'none';
         container.style.width = '70px';
         container.style.height = 'auto';
@@ -115,27 +55,7 @@ export var CollectionControl = L.Control.extend({
             }
         });
 
-        // Area control
-        this._createControl('<img src="/css/images/area-icon.png" alt="Area" title="Area" height="30" width="30">', container, function(e) {
-            this._toggleCollectionMode(this._areas, "areas_converter", e.target);
-        });        
-
-        // Poly Area control
-        this._createControl('<img src="/css/images/polyarea-icon.png" alt="Poly Area" title="Poly Area" height="30" width="30">', container, function(e) {
-            this._toggleCollectionMode(this._polyArea, "polyarea_converter", e.target);
-        });
-
-        // Path control
-        this._createControl('<img src="/css/images/path-icon.png" alt="Path" title="Path" height="30" width="30">', container, function (e) {
-            this._toggleCollectionMode(this._path, "path_converter", e.target);
-        });
-
-        // Dax Path control
-        this._createControl('<img src="/css/images/dax-path-icon.png" alt="Dax Path" title="Dax Path" height="25" width="30">', container, function (e) {
-            this._toggleCollectionMode(this._daxPath, "path_converter", e.target);
-        });
-
-        this._createControl('<img src="/css/images/dax-path-icon.png" alt="Graph" title="Graph" height="25" width="30">', container, function (e) {
+        this._createControl('<img src="css/images/dax-path-icon.png" alt="Graph" title="Graph" height="25" width="30">', container, function (e) {
             this._toggleCollectionMode(this._graph, "graph_converter", e.target);
         });
 
@@ -161,16 +81,15 @@ export var CollectionControl = L.Control.extend({
 
         L.DomEvent.on(this._map, 'mousemove', this._drawMouseArea, this);
 
-        var context = this;
+        let context = this;
         $("#output-type").on('change', () => context._outputCode());
-        $("#code-output").on('input propertychange paste', () => context._loadFromText());
         $("#bot-api").on('change', () => context._outputCode());
 
         return container;
     },
     
     _createControl: function(html, container, onClick) {
-        var control = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom', container);
+        let control = L.DomUtil.create('a', 'leaflet-bar leaflet-control leaflet-control-custom', container);
         control.innerHTML = html;
         L.DomEvent.on(control, 'click', onClick, this);
     },
@@ -179,27 +98,8 @@ export var CollectionControl = L.Control.extend({
         if (!this._editing) {
             return;
         }
-
-        var position = Position.fromLatLng(this._map, e.latlng, this._map.plane);
-
-        if (this._currentDrawable instanceof DaxPath) {
-            let self = this;
-            this._currentDrawable.add(position, function() {
-                self._outputCode();
-            });
-        } else if (this._currentDrawable instanceof Areas) {
-            if (this._firstSelectedAreaPosition === undefined) {
-                this._firstSelectedAreaPosition = position;
-            } else {
-                this._map.removeLayer(this._drawnMouseArea);
-                this._areas.add(new Area(this._firstSelectedAreaPosition, position));
-                this._firstSelectedAreaPosition = undefined;
-                this._outputCode();
-            }
-        } else {
-            this._currentDrawable.add(position);
-            this._outputCode();
-        }
+        this._currentDrawable.add(Position.fromLatLng(this._map, e.latlng, this._map.plane));
+        this._outputCode();
     },
 
     _drawMouseArea: function(e) {
@@ -207,29 +107,7 @@ export var CollectionControl = L.Control.extend({
             return;
         }
 
-        var mousePos = Position.fromLatLng(this._map, e.latlng, this._map.plane);
-
-        if (this._currentDrawable instanceof Areas) {
-            if (this._firstSelectedAreaPosition !== undefined) {
-
-                if (this._drawnMouseArea !== undefined) { 
-                    this._map.removeLayer(this._drawnMouseArea);
-                }
-
-                this._drawnMouseArea = new Area(this._firstSelectedAreaPosition, mousePos).toLeaflet(this._map);
-                this._drawnMouseArea.addTo(this._map, true);
-            }
-        } else if (this._currentDrawable instanceof PolyArea) {
-            if (this._drawnMouseArea !== undefined) { 
-                this._map.removeLayer(this._drawnMouseArea);
-            }
-            
-            this._drawnMouseArea = new PolyArea(this._map);
-            this._drawnMouseArea.addAll(this._currentDrawable.positions);
-            this._drawnMouseArea.add(mousePos);
-            this._drawnMouseArea = this._drawnMouseArea.toLeaflet(this._map);
-            this._drawnMouseArea.addTo(this._map, true);
-        }
+        let mousePos = Position.fromLatLng(this._map, e.latlng, this._map.plane);
     },
 
     _toggleCollectionMode: function(drawable, converter, element) {
@@ -284,26 +162,19 @@ export var CollectionControl = L.Control.extend({
         this._outputCode();
     },
 
-    _outputCode: function() {        
-        var output = "";
+    _outputCode: function () {
+        let output = "";
 
         if (this._currentDrawable !== undefined) {
-            var botAPI = $("#bot-api option:selected").text();
-            output = converters[botAPI][this._currentConverter].toJava(this._currentDrawable);
+            let botAPI = $("#bot-api option:selected").text();
+            output = converters[botAPI][this._currentConverter].toJson(this._currentDrawable);
         }
 
         $("#code-output").html(output);
     },
-    
-    _loadFromText: function() {
-        if (this._currentDrawable !== undefined) {
-            var botAPI = $("#bot-api option:selected").text();
-            converters[botAPI][this._currentConverter].fromJava($("#code-output").text(), this._currentDrawable);
-        }
-    },
 
-    _copyCodeToClipboard: function() {
-        var $temp = $("<textarea>");
+    _copyCodeToClipboard: function () {
+        let $temp = $("<textarea>");
         $("body").append($temp);
         $temp.val($("#code-output").text()).select();
         document.execCommand("copy");
