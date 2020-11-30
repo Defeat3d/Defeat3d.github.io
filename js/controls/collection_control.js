@@ -6,6 +6,7 @@ import {Path} from '../model/Path.js';
 import {DaxPath} from '../model/DaxPath.js';
 import {Areas} from '../model/Areas.js';
 import {PolyArea} from '../model/PolyArea.js';
+import {Graph} from '../model/Graph.js'
 
 
 // Import converters
@@ -32,6 +33,7 @@ import {QuantumBotPolyAreaConverter} from '../bot_api_converters/quantumbot/quan
 import {RuneMateAreasConverter} from '../bot_api_converters/runemate/runemate_areas_converter.js';
 import {RuneMatePathConverter} from '../bot_api_converters/runemate/runemate_path_converter.js';
 import {RuneMatePolyAreaConverter} from '../bot_api_converters/runemate/runemate_polyarea_converter.js';
+import {RuneMateGraphConverter} from "../bot_api_converters/runemate/runemate_graph_converter.js";
 
 var converters = {
     "OSBot": {
@@ -62,7 +64,8 @@ var converters = {
     "RuneMate": {
         "areas_converter": new RuneMateAreasConverter(),
         "path_converter": new RuneMatePathConverter(),
-        "polyarea_converter": new RuneMatePolyAreaConverter()
+        "polyarea_converter": new RuneMatePolyAreaConverter(),
+        "graph_converter": new RuneMateGraphConverter()
     }
 };
 
@@ -76,6 +79,7 @@ export var CollectionControl = L.Control.extend({
         this._daxPath = new DaxPath(this._map);
         this._areas = new Areas(this._map);
         this._polyArea = new PolyArea(this._map);
+        this._graph = new Graph(this._map);
 
         this._currentDrawable = undefined;
         this._currentConverter = undefined;
@@ -122,17 +126,21 @@ export var CollectionControl = L.Control.extend({
         });
 
         // Path control
-        this._createControl('<img src="/css/images/path-icon.png" alt="Path" title="Path" height="30" width="30">', container, function(e) {
+        this._createControl('<img src="/css/images/path-icon.png" alt="Path" title="Path" height="30" width="30">', container, function (e) {
             this._toggleCollectionMode(this._path, "path_converter", e.target);
         });
 
         // Dax Path control
-        this._createControl('<img src="/css/images/dax-path-icon.png" alt="Dax Path" title="Dax Path" height="25" width="30">', container, function(e) {
+        this._createControl('<img src="/css/images/dax-path-icon.png" alt="Dax Path" title="Dax Path" height="25" width="30">', container, function (e) {
             this._toggleCollectionMode(this._daxPath, "path_converter", e.target);
         });
 
+        this._createControl('<img src="/css/images/dax-path-icon.png" alt="Graph" title="Graph" height="25" width="30">', container, function (e) {
+            this._toggleCollectionMode(this._graph, "graph_converter", e.target);
+        });
+
         // Undo control
-        this._createControl('<i class="fa fa-undo" aria-hidden="true"></i>', container, function(e) {
+        this._createControl('<i class="fa fa-undo" aria-hidden="true"></i>', container, function (e) {
             if (this._currentDrawable !== undefined) {
                 this._currentDrawable.removeLast();
                 this._outputCode();
